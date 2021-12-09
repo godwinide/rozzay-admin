@@ -168,6 +168,12 @@
                             <label for="cc-name" class="control-label mb-1">Debt</label>
                             <input id="cc-name" name="debt" type="number" class="form-control cc-name valid" value="<%=customer.debt%>" required>
                         </div>
+                        <select class="form-select" name="verify_status" aria-label="" required>
+                            <option selected>Verify Status</option>
+                            <option value="unverified">unverified</option>
+                            <option value="pending">pending</option>
+                            <option value="verified">verified</option>
+                          </select>
                         <div class="form-group has-success">
                             <label for="cc-name" class="control-label mb-1">Acoount plan</label>
                             <input id="cc-name" name="account_plan" type="text" class="form-control cc-name valid" value="<%=customer.account_plan%>" required>

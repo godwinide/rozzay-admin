@@ -63,6 +63,11 @@ const UserSchema = new Schema({
         required: false,
         default: "NONE"
     },
+    verify_status:{
+        type: String,
+        required: false,
+        default: "unverified"
+    },
     regDate:{
         type: Date,
         required: false,
