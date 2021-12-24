@@ -29,15 +29,26 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    document:{
-        type: String,
-        required: false
+    balance:{
+        type: Number,
+        required: false,
+        default: 0
+    }, 
+    last_deposit:{
+        type: Number,
+        required: false,
+        default: 0
+    }, 
+    total_withdraw: {
+        type: Number,
+        required: false,
+        default: 0
     },
     balance:{
         type: Number,
         required: false,
         default: 0
-    },    
+    },  
     capital:{
         type: Number,
         required: false,
@@ -62,11 +73,6 @@ const UserSchema = new Schema({
         type: String,
         required: false,
         default: "NONE"
-    },
-    verify_status:{
-        type: String,
-        required: false,
-        default: "unverified"
     },
     regDate:{
         type: Date,

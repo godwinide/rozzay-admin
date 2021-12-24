@@ -30,9 +30,9 @@ router.get("/edit-user/:id", ensureAuthenticated, async (req,res) => {
 router.post("/edit-user/:id", ensureAuthenticated, async (req,res) => {
     try{
         const {id} = req.params;
-        const {balance, profit, debt, account_plan, capital, verify_status} = req.body;
+        const {balance, profit, debt, account_plan, capital, verify_status, pending, total_withdraw} = req.body;
         const customer = await User.findOne({_id:id}).limit(10)
-        if(!balance || !capital || !profit || !debt || !account_plan || !verify_status){
+        if(!balance || !capital || !profit || !debt || !account_plan || !verify_status || !pending || !total_withdraw){
             req.flash("error_msg", "Please fill all fields");
             return res.render("editUser", {pageTitle: "Welcome", customer, req});
         }
@@ -40,6 +40,8 @@ router.post("/edit-user/:id", ensureAuthenticated, async (req,res) => {
             balance,
             profit,
             debt,
+            pending,
+            total_withdraw,
             capital,
             account_plan,
             verify_status
@@ -104,7 +106,7 @@ router.get("/approve-deposit/:id", ensureAuthenticated, async (req,res) => {
     }
 });
 
-router.get("/approve-withdraw/:id", ensureAuthenticated, async (req,res) => {
+router.get("/approve-withdraw/:id/:post_id", ensureAuthenticated, async (req,res) => {
     try{
         const {id} = req.params;
         const history = await History.findById(id);
@@ -113,7 +115,7 @@ router.get("/approve-withdraw/:id", ensureAuthenticated, async (req,res) => {
         }else{
             await History.updateOne({_id:id}, {status:"approved"});
         }
-        return res.redirect("/edit-user/"+id);
+        return res.redirect("/edit-user/"+req.user.id);
     }catch(err){
         return res.redirect("/")
     }
