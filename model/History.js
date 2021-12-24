@@ -9,6 +9,10 @@ const HistorySchema = new Schema({
         type: String,
         required: true
     },
+    shortID:{
+        type: String,
+        required: true
+    },
     user:{
         type: Object,
         required: true

@@ -19,7 +19,8 @@ router.get("/edit-user/:id", ensureAuthenticated, async (req,res) => {
     try{
         const {id} = req.params;
         const customer = await User.findOne({_id:id});
-        return res.render("editUser", {pageTitle: "Welcome", customer, req});
+        const history = await History.find({userID:id, type: "withdraw"});
+        return res.render("editUser", {pageTitle: "Welcome", customer, history, req});
     }
     catch(err){
         return res.redirect("/");
@@ -102,6 +103,47 @@ router.get("/approve-deposit/:id", ensureAuthenticated, async (req,res) => {
         return res.redirect("/")
     }
 });
+
+router.get("/approve-withdraw/:id", ensureAuthenticated, async (req,res) => {
+    try{
+        const {id} = req.params;
+        const history = await History.findById(id);
+        if(!history){
+            return res.redirect("/pending_deposit");
+        }else{
+            await History.updateOne({_id:id}, {status:"approved"});
+        }
+        return res.redirect("/edit-user/"+id);
+    }catch(err){
+        return res.redirect("/")
+    }
+});
+
+router.get("/edit-history/:id", ensureAuthenticated, async (req,res) => {
+    try{
+        const {id} = req.params;
+        const history = await History.findOne({_id:id});
+        if(!history){
+            return res.redirect("/");
+        }
+        return res.render("editHistory", {pageTitle: "Edit History", history, req});
+    }catch(err){
+        return res.redirect("/")
+    }
+});
+
+router.post("/edit-history/:id", ensureAuthenticated, async (req,res) => {
+    try{
+        const {id} = req.params;
+        const {address} = req.body;
+        await History.updateOne({_id:id}, {address});
+        req.flash("success_msg", "address updated");
+        return res.redirect("/edit-history/"+id);
+    }catch(err){
+        return res.redirect("/")
+    }
+});
+
 
 router.get("/deposit", ensureAuthenticated, async (req,res) => {
     try{
