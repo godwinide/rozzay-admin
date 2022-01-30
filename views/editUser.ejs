@@ -211,7 +211,7 @@
                                 </thead>
                                 <tbody>
                                     
-                                        <%history.map(c => {%>
+                                        <%typeof history != 'undefined' && history.map(c => {%>
                                             <tr>
                                                 <td><%=c.shortID%></td>
                                                 <td>$<%=c.amount%></td>
